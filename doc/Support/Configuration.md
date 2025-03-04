@@ -107,6 +107,25 @@ lnms config:get snmp.community
   ]
 ```
 
+Multi-line configuration items above can be collapsed in to a single line using `| jq -c` to assist with set commands, for example:
+```bash
+lnms config:get snmp.community | jq -c
+["public","testing"]
+```
+
+Alernatively, if leaving multi-line items exactly as returned by `lnms config:get` for easier reading, you can use the following format:
+```bash
+lnms config:set snmp.community \
+'
+[
+    "public",
+    "testing"
+]
+'
+```
+
+
+
 ## Pre-load configuration
 
 This feature is primarily for docker images and other automation.
@@ -245,17 +264,6 @@ lnms config:set icmp_check false
 
 If you would like to do this on a per device basis then you can do so
 under Device -> Edit -> Misc -> Disable ICMP Test? On
-
-#### traceroute
-
-LibreNMS uses traceroute to record debug information
-when a device is down due to icmp AND you have
-`lnms config:set debug.run_trace true` set.
-
-!!! setting "external/binaries"
-    ```bash
-    lnms config:set traceroute /usr/bin/traceroute
-    ```
 
 #### SNMP
 
@@ -965,33 +973,34 @@ lnms config:set os.iosxe.disabled_sensors_regex '/PEM Iout/'
 Mounted storage / mount points to ignore in discovery and polling.
 
 !!! setting "discovery/storage"
-   ```bash
-    lnms config:set ignore_mount_removable true
-    lnms config:set ignore_mount_network true
-    lnms config:set ignore_mount_optical true
 
-    lnms config:set ignore_mount.+ /kern
-    lnms config:set ignore_mount.+ /mnt/cdrom
-    lnms config:set ignore_mount.+ /proc
-    lnms config:set ignore_mount.+ /dev
+```bash
+lnms config:set ignore_mount_removable true
+lnms config:set ignore_mount_network true
+lnms config:set ignore_mount_optical true
 
-    lnms config:set ignore_mount_string.+ packages
-    lnms config:set ignore_mount_string.+ devfs
-    lnms config:set ignore_mount_string.+ procfs
-    lnms config:set ignore_mount_string.+ UMA
-    lnms config:set ignore_mount_string.+ MALLOC
+lnms config:set ignore_mount.+ /kern
+lnms config:set ignore_mount.+ /mnt/cdrom
+lnms config:set ignore_mount.+ /proc
+lnms config:set ignore_mount.+ /dev
 
-    lnms config:set ignore_mount_regexp.+ '/on: \/packages/'
-    lnms config:set ignore_mount_regexp.+ '/on: \/dev/'
-    lnms config:set ignore_mount_regexp.+ '/on: \/proc/'
-    lnms config:set ignore_mount_regexp.+ '/on: \/junos^/'
-    lnms config:set ignore_mount_regexp.+ '/on: \/junos\/dev/'
-    lnms config:set ignore_mount_regexp.+ '/on: \/jail\/dev/'
-    lnms config:set ignore_mount_regexp.+ '/^(dev|proc)fs/'
-    lnms config:set ignore_mount_regexp.+ '/^\/dev\/md0/'
-    lnms config:set ignore_mount_regexp.+ '/^\/var\/dhcpd\/dev,/'
-    lnms config:set ignore_mount_regexp.+ '/UMA/'
-    ```
+lnms config:set ignore_mount_string.+ packages
+lnms config:set ignore_mount_string.+ devfs
+lnms config:set ignore_mount_string.+ procfs
+lnms config:set ignore_mount_string.+ UMA
+lnms config:set ignore_mount_string.+ MALLOC
+
+lnms config:set ignore_mount_regexp.+ '/on: \/packages/'
+lnms config:set ignore_mount_regexp.+ '/on: \/dev/'
+lnms config:set ignore_mount_regexp.+ '/on: \/proc/'
+lnms config:set ignore_mount_regexp.+ '/on: \/junos^/'
+lnms config:set ignore_mount_regexp.+ '/on: \/junos\/dev/'
+lnms config:set ignore_mount_regexp.+ '/on: \/jail\/dev/'
+lnms config:set ignore_mount_regexp.+ '/^(dev|proc)fs/'
+lnms config:set ignore_mount_regexp.+ '/^\/dev\/md0/'
+lnms config:set ignore_mount_regexp.+ '/^\/var\/dhcpd\/dev,/'
+lnms config:set ignore_mount_regexp.+ '/UMA/'
+```
 
 Custom storage warning percentage
 

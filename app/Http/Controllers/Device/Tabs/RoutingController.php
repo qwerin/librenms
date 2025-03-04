@@ -28,6 +28,7 @@ namespace App\Http\Controllers\Device\Tabs;
 use App\Facades\DeviceCache;
 use App\Models\Component;
 use App\Models\Device;
+use Illuminate\Http\Request;
 use LibreNMS\Interfaces\UI\DeviceTab;
 
 class RoutingController implements DeviceTab
@@ -40,6 +41,7 @@ class RoutingController implements DeviceTab
         //dd($device);
         $this->tabs = [
             'ospf' => $device->ospfInstances()->count(),
+            'ospfv3' => $device->ospfv3Instances()->count(),
             'isis' => $device->isisAdjacencies()->count(),
             'bgp' => $device->bgppeers()->count(),
             'vrf' => $device->vrfs()->count(),
@@ -72,7 +74,7 @@ class RoutingController implements DeviceTab
         return __('Routing');
     }
 
-    public function data(Device $device): array
+    public function data(Device $device, Request $request): array
     {
         return [
             'routing_tabs' => array_filter($this->tabs),
